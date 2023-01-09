@@ -1,7 +1,8 @@
+import random
 import pygame
 from pygame import mixer
 pygame.init()
-
+# TODO: importar modulos individuales en vez de librerias completas
 ANCHO = 800
 ALTO = 400
 anchoContainer = 740
@@ -9,6 +10,7 @@ altoContainer = 250
 fps = 60
 timer = pygame.time.Clock()
 font = pygame.font.Font('freesansbold.ttf', 32)
+#TODO: borrar colores no usados al final
 black = (0,40,58)
 yellow = (248,178,1)
 cafe = (198,113,0)
@@ -34,7 +36,7 @@ soundLi = pygame.mixer.Sound('sounds\liNote.wav')
 soundTi = pygame.mixer.Sound('sounds\\tiNote.wav')
 soundDo2 = pygame.mixer.Sound('sounds\do2Note.wav')
 
-asso = {
+assoDict = {
 0 : soundDo1,
 1 : soundDi,
 2 : soundRe,
@@ -50,26 +52,41 @@ asso = {
 12 : soundDo2
 }
 
+assoList = [soundDo1, soundDi, soundRe, soundRi, soundMi, soundFa,
+soundFi, soundSol, soundSi, soundLa, soundLi, soundTi, soundDo2]
+
+assoList_copy = assoList.copy()
+
+
+
 def drawGraphs():
     #caja negra contenedora
     pygame.draw.rect(screen, black, [30, 35, anchoContainer, altoContainer], 0, 10)
     #teclas blancas
     for i in range(8):
         pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 60, 140, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
-    #2 teclas negras
+    #primeras 2 teclas negras
     for i in range(2):
         pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 110, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
-    #3 teclas negras
+    #ultimas 3 teclas negras
     for i in range(3):
         pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 365, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
     #barra espaciadora referencia tonica
     pygame.draw.rect(screen, blue, [ANCHO//2 - 200, 225, 395, 40], 0, 3)
     #rectangulo vacio
     pygame.draw.rect(screen, blue, [0,0,0,0])
+
 while run:
     timer.tick(fps)
     screen.fill(cafe)
     drawGraphs()
+    #-----------------shuffle asso dict-------------------
+    keys = list(asso.keys())
+    random.shuffle(keys)
+    shuffledAsso = dict()
+    for key in keys:
+        shuffledAsso.update({key: asso[key]})
+    #-----------------------------------------------------
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
@@ -77,30 +94,30 @@ while run:
             if event.key == pygame.K_SPACE:
                 soundDo1.play()
             if event.key == pygame.K_z:
-                asso.get(0).play()
+                shuffledAsso.get(0).play()
             if event.key == pygame.K_s:
-                asso.get(1).play()
+                shuffledAsso.get(1).play()
             if event.key == pygame.K_x:
-                asso.get(2).play()
+                shuffledAsso.get(2).play()
             if event.key == pygame.K_d:
-                asso.get(3).play()
+                shuffledAsso.get(3).play()
             if event.key == pygame.K_c:
-                asso.get(4).play()
+                shuffledAsso.get(4).play()
             if event.key == pygame.K_v:
-                asso.get(5).play()
+                shuffledAsso.get(5).play()
             if event.key == pygame.K_g:
-                asso.get(6).play()
+                shuffledAsso.get(6).play()
             if event.key == pygame.K_b:
-                asso.get(7).play()
+                shuffledAsso.get(7).play()
             if event.key == pygame.K_h:
-                asso.get(8).play()
+                shuffledAsso.get(8).play()
             if event.key == pygame.K_n:
-                asso.get(9).play()
+                shuffledAsso.get(9).play()
             if event.key == pygame.K_j:
-                asso.get(10).play()
+                shuffledAsso.get(10).play()
             if event.key == pygame.K_m:
-                asso.get(11).play()
+                shuffledAsso.get(11).play()
             if event.key == pygame.K_COMMA:
-                asso.get(12).play()
+                shuffledAsso.get(12).play()
     pygame.display.flip()
 pygame.quit()
