@@ -2,6 +2,7 @@ import random
 import pygame
 from pygame import mixer
 pygame.init()
+pygame.mixer.init()
 #TODO: importar modulos individuales en vez de librerias completas
 ANCHO = 800
 ALTO = 410
@@ -21,6 +22,7 @@ green = (0, 200, 50)
 gold = (212, 175, 55)
 screen = pygame.display.set_mode([ANCHO, ALTO])
 run = True
+
 
 soundDo1 = pygame.mixer.Sound('sounds\do1Note.wav')
 soundDi = pygame.mixer.Sound('sounds\diNote.wav')
@@ -72,12 +74,17 @@ btnOtroEjer = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) - 350, 315, 150, 40
 btnComprobar = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) + 170, 350, 150, 40], 0, 7)
 lblCurrentScale = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) + 170, 300, 190, 40], 0, 7)
 #colores para la caja de entrada detexto
-color_inactive = blue
-color_active = (0,0,0)
+color_inactive = (200,200,255)
+color_active = blue
 colorInput = color_inactive
 active = False
 inputStr = ''
 
+font = pygame.font.SysFont(None, 90)
+whiteKeys = font.render('z   x   c   v   b   n   m   ,', True, 'black')
+screen.blit(whiteKeys, (75, 145))
+blackKeys = font.render('s   d        g   h   j', True, 'black')
+screen.blit(blackKeys, (125, 60))
 
 soundList = [soundDo1, soundDi, soundRe, soundRi, soundMi, soundFa,
 soundFi, soundSol, soundSi, soundLa, soundLi, soundTi, soundDo2]
@@ -107,6 +114,7 @@ while run:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 soundDo1.play()
+
             if event.key == pygame.K_z:
                 soundList_copy[0].play()
             if event.key == pygame.K_s:
