@@ -25,15 +25,6 @@ tableInit = {
     ',' : ','
 }
 
-def pickOrden(table):
-    # shuffledTable = dict(zip(table.keys(), random.sample(table.values(), len(table))))
-    keys = table.keys()
-    values = table.values()
-    random.shuffle(values)
-    dict(zip(keys, values))
-    print(table)
-
-pickOrden(tableInit)
 
 
 

@@ -2,16 +2,16 @@ import random
 import pygame
 from pygame import mixer
 pygame.init()
-# TODO: importar modulos individuales en vez de librerias completas
+#TODO: importar modulos individuales en vez de librerias completas
 ANCHO = 800
-ALTO = 400
+ALTO = 410
 anchoContainer = 740
 altoContainer = 250
 fps = 60
 timer = pygame.time.Clock()
-font = pygame.font.Font('freesansbold.ttf', 32)
+font = pygame.font.Font('Roboto-Bold.ttf', 32)
 #TODO: borrar colores no usados al final
-black = (0,40,58)
+darkBlue = (0,40,58)
 yellow = (248,178,1)
 cafe = (198,113,0)
 white = (255, 255, 230)
@@ -51,73 +51,93 @@ assoDict = {
 11 : soundTi,
 12 : soundDo2
 }
+#----------------------------graficos fijos-----------------------
+screen.fill(cafe)
+#caja negra contenedora
+pygame.draw.rect(screen, darkBlue, [30, 35, anchoContainer, altoContainer], 0, 10)
+#teclas blancas
+for i in range(8):
+    pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 60, 140, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
+#primeras 2 teclas negras
+for i in range(2):
+    pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 110, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
+#ultimas 3 teclas negras
+for i in range(3):
+    pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 365, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
+#barra espaciadora referencia tonica
+pygame.draw.rect(screen, blue, [ANCHO//2 - 200, 225, 395, 40], 0, 3)
+#la parte inferior
+inputBox = pygame.draw.rect(screen, gold, [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
+btnOtroEjer = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) - 350, 315, 150, 40], 0, 7)
+btnComprobar = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) + 170, 350, 150, 40], 0, 7)
+lblCurrentScale = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) + 170, 300, 190, 40], 0, 7)
+#colores para la caja de entrada detexto
+color_inactive = blue
+color_active = (0,0,0)
+colorInput = color_inactive
+active = False
+inputStr = ''
 
-assoList = [soundDo1, soundDi, soundRe, soundRi, soundMi, soundFa,
+
+soundList = [soundDo1, soundDi, soundRe, soundRi, soundMi, soundFa,
 soundFi, soundSol, soundSi, soundLa, soundLi, soundTi, soundDo2]
-
-assoList_copy = assoList.copy()
-
-
-
-def drawGraphs():
-    #caja negra contenedora
-    pygame.draw.rect(screen, black, [30, 35, anchoContainer, altoContainer], 0, 10)
-    #teclas blancas
-    for i in range(8):
-        pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 60, 140, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
-    #primeras 2 teclas negras
-    for i in range(2):
-        pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 110, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
-    #ultimas 3 teclas negras
-    for i in range(3):
-        pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 365, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
-    #barra espaciadora referencia tonica
-    pygame.draw.rect(screen, blue, [ANCHO//2 - 200, 225, 395, 40], 0, 3)
-    #rectangulo vacio
-    pygame.draw.rect(screen, blue, [0,0,0,0])
+soundList_copy = soundList.copy()
+def shuffleNotes():
+    random.shuffle(soundList_copy)
+random.shuffle(soundList_copy)
 
 while run:
     timer.tick(fps)
-    screen.fill(cafe)
-    drawGraphs()
-    #-----------------shuffle asso dict-------------------
-    keys = list(asso.keys())
-    random.shuffle(keys)
-    shuffledAsso = dict()
-    for key in keys:
-        shuffledAsso.update({key: asso[key]})
-    #-----------------------------------------------------
+    # screen.fill(cafe)
+    # drawGraphs()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+                if inputBox.collidepoint(event.pos):
+                    # cuando haces click en la caja se activa, la var active empieza siendo falsa
+                    active = not active
+                else:
+                    active = False
+                # Cambia el color actual de la caja de input
+                colorInput = color_active if active else color_inactive
+
+                if btnOtroEjer.collidepoint(event.pos):
+                    shuffleNotes()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 soundDo1.play()
             if event.key == pygame.K_z:
-                shuffledAsso.get(0).play()
+                soundList_copy[0].play()
             if event.key == pygame.K_s:
-                shuffledAsso.get(1).play()
+                soundList_copy[1].play()
             if event.key == pygame.K_x:
-                shuffledAsso.get(2).play()
+                soundList_copy[2].play()
             if event.key == pygame.K_d:
-                shuffledAsso.get(3).play()
+                soundList_copy[3].play()
             if event.key == pygame.K_c:
-                shuffledAsso.get(4).play()
+                soundList_copy[4].play()
             if event.key == pygame.K_v:
-                shuffledAsso.get(5).play()
+                soundList_copy[5].play()
             if event.key == pygame.K_g:
-                shuffledAsso.get(6).play()
+                soundList_copy[6].play()
             if event.key == pygame.K_b:
-                shuffledAsso.get(7).play()
+                soundList_copy[7].play()
             if event.key == pygame.K_h:
-                shuffledAsso.get(8).play()
+                soundList_copy[8].play()
             if event.key == pygame.K_n:
-                shuffledAsso.get(9).play()
+                soundList_copy[9].play()
             if event.key == pygame.K_j:
-                shuffledAsso.get(10).play()
+                soundList_copy[10].play()
             if event.key == pygame.K_m:
-                shuffledAsso.get(11).play()
+                soundList_copy[11].play()
             if event.key == pygame.K_COMMA:
-                shuffledAsso.get(12).play()
+                soundList_copy[12].play()
+    #funcionalidad input box
+    txt_surface = font.render(inputStr, True, colorInput)
+    screen.blit(txt_surface, (inputBox.x+7, inputBox.y+10))
+    pygame.draw.rect(screen, colorInput, inputBox, 3, 5)
+
     pygame.display.flip()
+    timer.tick(fps)
 pygame.quit()
