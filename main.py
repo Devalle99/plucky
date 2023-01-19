@@ -12,11 +12,11 @@ fps = 60
 timer = pygame.time.Clock()
 font = pygame.font.Font('Roboto-Bold.ttf', 32)
 #TODO: borrar colores no usados al final
-darkBlue = (0,40,58)
+darkBlue = (64*0.5,130*0.5,159*0.5)
 yellow = (248,178,1)
-cafe = (198,113,0)
+cafe = (213,128,41)
 white = (255, 255, 230)
-blue = (1,171,183)
+blue = (223,170,36)
 red = (255, 0, 0)
 green = (0, 200, 50)
 gold = (212, 175, 55)
@@ -69,34 +69,54 @@ for i in range(3):
 #barra espaciadora referencia tonica
 pygame.draw.rect(screen, blue, [ANCHO//2 - 200, 225, 395, 40], 0, 3)
 #la parte inferior
-inputBox = pygame.draw.rect(screen, gold, [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
-btnOtroEjer = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) - 350, 315, 150, 40], 0, 7)
-btnComprobar = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) + 170, 350, 150, 40], 0, 7)
-lblCurrentScale = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) + 170, 300, 190, 40], 0, 7)
+# inputBox = pygame.draw.rect(screen, gold, [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
+btnOtroEjer = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) - 350, 315, 180, 43], 5, 7)
+btnComprobar = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) + 170, 350, 190, 40], 5, 7)
+lblCurrentScale = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) + 170, 300, 190, 40], 5, 7)
 #colores para la caja de entrada detexto
-color_inactive = (200,200,255)
-color_active = blue
+color_inactive = 'white'
+color_active = 'black'
 colorInput = color_inactive
 active = False
 inputStr = ''
 
-font = pygame.font.SysFont(None, 90)
-whiteKeys = font.render('z   x   c   v   b   n   m   ,', True, 'black')
+# texto
+font1 = pygame.font.SysFont(None, 90)
+font2 = pygame.font.SysFont(None, 35)
+whiteKeys = font1.render('z   x   c   v   b   n   m   ,', True, 'black')
 screen.blit(whiteKeys, (75, 145))
-blackKeys = font.render('s   d        g   h   j', True, 'black')
+blackKeys = font1.render('s   d        g   h   j', True, 'black')
 screen.blit(blackKeys, (125, 60))
+currentScale = font2.render('Jonico', True, 'black')
+screen.blit(currentScale, (585, 308))
+comprobar = font2.render('comprobar', True, 'black')
+screen.blit(comprobar, (598, 357))
+otroEj = font2.render('Otro ejercicio', True, 'black')
+screen.blit(otroEj, (58, 323))
 
+userText = ''
 soundList = [soundDo1, soundDi, soundRe, soundRi, soundMi, soundFa,
 soundFi, soundSol, soundSi, soundLa, soundLi, soundTi, soundDo2]
 soundList_copy = soundList.copy()
 def shuffleNotes():
     random.shuffle(soundList_copy)
+# llamar a random antes de que empiece el loop
 random.shuffle(soundList_copy)
 
 while run:
     timer.tick(fps)
-    # screen.fill(cafe)
-    # drawGraphs()
+    # -----------------------------------
+    # draw rectangle and argument passed which should
+    # be on screen
+    inputBox = pygame.draw.rect(screen, gold, [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
+    text_surface = font2.render(userText, True, ('black'))
+    # render at position stated in arguments
+    screen.blit(text_surface, (inputBox.x+8, inputBox.y+13))
+      
+    # set width of textfield so that text cannot get
+    # outside of user's text input
+    inputBox.w = max(300, text_surface.get_width()+10)
+    # --------------------------------------
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
@@ -112,6 +132,14 @@ while run:
                 if btnOtroEjer.collidepoint(event.pos):
                     shuffleNotes()
         if event.type == pygame.KEYDOWN:
+
+            # Check for backspace
+            if event.key == pygame.K_BACKSPACE: 
+                # get text input from 0 to -1 i.e. end.
+                userText = userText[:-1]  
+            else:
+                userText += event.unicode
+            
             if event.key == pygame.K_SPACE:
                 soundDo1.play()
 
