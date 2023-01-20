@@ -10,19 +10,13 @@ anchoContainer = 740
 altoContainer = 250
 fps = 60
 timer = pygame.time.Clock()
-font = pygame.font.Font('Roboto-Bold.ttf', 32)
-#TODO: borrar colores no usados al final
 darkBlue = (64*0.5,130*0.5,159*0.5)
-yellow = (248,178,1)
-cafe = (213,128,41)
-white = (255, 255, 230)
-blue = (223,170,36)
-red = (255, 0, 0)
-green = (0, 200, 50)
+mostaza = (213,128,41)
+amarillo = (223,170,36)
 gold = (212, 175, 55)
 screen = pygame.display.set_mode([ANCHO, ALTO])
 run = True
-
+userText = ''
 
 soundDo1 = pygame.mixer.Sound('sounds\do1Note.wav')
 soundDi = pygame.mixer.Sound('sounds\diNote.wav')
@@ -36,38 +30,23 @@ soundSi = pygame.mixer.Sound('sounds\siNote.wav')
 soundLa = pygame.mixer.Sound('sounds\laNote.wav')
 soundLi = pygame.mixer.Sound('sounds\liNote.wav')
 soundTi = pygame.mixer.Sound('sounds\\tiNote.wav')
-soundDo2 = pygame.mixer.Sound('sounds\do2Note.wav')
+soundList = [soundDo1, soundDi, soundRe, soundRi, soundMi, soundFa,
+soundFi, soundSol, soundSi, soundLa, soundLi, soundTi]
+soundList_copy = soundList.copy()
 
-assoDict = {
-0 : soundDo1,
-1 : soundDi,
-2 : soundRe,
-3 : soundRi,
-4 : soundMi,
-5 : soundFa,
-6 : soundFi,
-7 : soundSol,
-8 : soundSi,
-9 : soundLa,
-10 : soundLi,
-11 : soundTi,
-12 : soundDo2
-}
 #----------------------------graficos fijos-----------------------
-screen.fill(cafe)
+screen.fill(mostaza)
 #caja negra contenedora
 pygame.draw.rect(screen, darkBlue, [30, 35, anchoContainer, altoContainer], 0, 10)
 #teclas blancas
-for i in range(8):
-    pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 60, 140, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
+for i in range(7):
+    pygame.draw.rect(screen, amarillo, [i*86 + 60, 140, 72, 72], 0, 3)
 #primeras 2 teclas negras
 for i in range(2):
-    pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 110, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
+    pygame.draw.rect(screen, amarillo, [i*86 + 110, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
 #ultimas 3 teclas negras
 for i in range(3):
-    pygame.draw.rect(screen, blue, [i*(anchoContainer//8 - 6) + 365, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
-#barra espaciadora referencia tonica
-pygame.draw.rect(screen, blue, [ANCHO//2 - 200, 225, 395, 40], 0, 3)
+    pygame.draw.rect(screen, amarillo, [i*86 + 365, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
 #la parte inferior
 # inputBox = pygame.draw.rect(screen, gold, [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
 btnOtroEjer = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) - 350, 315, 180, 43], 5, 7)
@@ -83,7 +62,7 @@ inputStr = ''
 # texto
 font1 = pygame.font.SysFont(None, 90)
 font2 = pygame.font.SysFont(None, 35)
-whiteKeys = font1.render('z   x   c   v   b   n   m   ,', True, 'black')
+whiteKeys = font1.render('z   x   c   v   b   n   m', True, 'black')
 screen.blit(whiteKeys, (75, 145))
 blackKeys = font1.render('s   d        g   h   j', True, 'black')
 screen.blit(blackKeys, (125, 60))
@@ -94,21 +73,14 @@ screen.blit(comprobar, (598, 357))
 otroEj = font2.render('Otro ejercicio', True, 'black')
 screen.blit(otroEj, (58, 323))
 
-userText = ''
-soundList = [soundDo1, soundDi, soundRe, soundRi, soundMi, soundFa,
-soundFi, soundSol, soundSi, soundLa, soundLi, soundTi, soundDo2]
-soundList_copy = soundList.copy()
-def shuffleNotes():
-    random.shuffle(soundList_copy)
-# llamar a random antes de que empiece el loop
-random.shuffle(soundList_copy)
-
+print(anchoContainer//8 - 6)
 while run:
     timer.tick(fps)
     # -----------------------------------
     # draw rectangle and argument passed which should
     # be on screen
-    inputBox = pygame.draw.rect(screen, gold, [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
+    inputBox = pygame.draw.rect(screen, gold, 
+    [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
     text_surface = font2.render(userText, True, ('black'))
     # render at position stated in arguments
     screen.blit(text_surface, (inputBox.x+8, inputBox.y+13))
@@ -122,7 +94,8 @@ while run:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN:
                 if inputBox.collidepoint(event.pos):
-                    # cuando haces click en la caja se activa, la var active empieza siendo falsa
+                    # cuando haces click en la caja se activa, 
+                    # la var active empieza siendo falsa
                     active = not active
                 else:
                     active = False
@@ -140,9 +113,6 @@ while run:
             else:
                 userText += event.unicode
             
-            if event.key == pygame.K_SPACE:
-                soundDo1.play()
-
             if event.key == pygame.K_z:
                 soundList_copy[0].play()
             if event.key == pygame.K_s:
@@ -167,10 +137,9 @@ while run:
                 soundList_copy[10].play()
             if event.key == pygame.K_m:
                 soundList_copy[11].play()
-            if event.key == pygame.K_COMMA:
-                soundList_copy[12].play()
+
     #funcionalidad input box
-    txt_surface = font.render(inputStr, True, colorInput)
+    txt_surface = font2.render(inputStr, True, colorInput)
     screen.blit(txt_surface, (inputBox.x+7, inputBox.y+10))
     pygame.draw.rect(screen, colorInput, inputBox, 3, 5)
 
