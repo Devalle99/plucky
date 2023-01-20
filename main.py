@@ -36,27 +36,25 @@ soundList_copy = soundList.copy()
 
 #----------------------------graficos fijos-----------------------
 screen.fill(mostaza)
-#caja negra contenedora
 pygame.draw.rect(screen, darkBlue, [30, 35, anchoContainer, altoContainer], 0, 10)
 #teclas blancas
 for i in range(7):
     pygame.draw.rect(screen, amarillo, [i*86 + 60, 140, 72, 72], 0, 3)
 #primeras 2 teclas negras
 for i in range(2):
-    pygame.draw.rect(screen, amarillo, [i*86 + 110, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
+    pygame.draw.rect(screen, amarillo, [i*86 + 110, 55, 72, 72], 0, 3)
 #ultimas 3 teclas negras
 for i in range(3):
-    pygame.draw.rect(screen, amarillo, [i*86 + 365, 55, (anchoContainer//8 - 20), (anchoContainer//8 - 20)], 0, 3)
-#la parte inferior
-# inputBox = pygame.draw.rect(screen, gold, [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
-btnOtroEjer = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) - 350, 315, 180, 43], 5, 7)
-btnComprobar = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) + 170, 350, 190, 40], 5, 7)
-lblCurrentScale = pygame.draw.rect(screen, darkBlue, [(ANCHO//2) + 170, 300, 190, 40], 5, 7)
-#colores para la caja de entrada detexto
-color_inactive = 'white'
-color_active = 'black'
-colorInput = color_inactive
-active = False
+    pygame.draw.rect(screen, amarillo, [i*86 + 365, 55, 72, 72], 0, 3)
+inputBox = pygame.draw.rect(screen, (255,255,180), [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
+btnOtroEjer = pygame.draw.rect(screen, darkBlue, [50, 315, 180, 43], 5, 7)
+btnComprobar = pygame.draw.rect(screen, darkBlue, [570, 350, 190, 40], 5, 7)
+lblCurrentScale = pygame.draw.rect(screen, darkBlue, [570, 300, 190, 40], 5, 7)
+#colores para la caja de entrada de texto
+colorPassive = mostaza
+colorActive = 'black'
+colorInput = colorPassive
+passive = False
 inputStr = ''
 
 # texto
@@ -73,37 +71,31 @@ screen.blit(comprobar, (598, 357))
 otroEj = font2.render('Otro ejercicio', True, 'black')
 screen.blit(otroEj, (58, 323))
 
-print(anchoContainer//8 - 6)
 while run:
     timer.tick(fps)
     # -----------------------------------
-    # draw rectangle and argument passed which should
-    # be on screen
-    inputBox = pygame.draw.rect(screen, gold, 
-    [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
     text_surface = font2.render(userText, True, ('black'))
-    # render at position stated in arguments
     screen.blit(text_surface, (inputBox.x+8, inputBox.y+13))
-      
-    # set width of textfield so that text cannot get
-    # outside of user's text input
-    inputBox.w = max(300, text_surface.get_width()+10)
+    inputBox.width = max(300, text_surface.get_width())
     # --------------------------------------
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN:
                 if inputBox.collidepoint(event.pos):
-                    # cuando haces click en la caja se activa, 
-                    # la var active empieza siendo falsa
-                    active = not active
+                    # cambia el estado de passive
+                    passive = not passive
                 else:
-                    active = False
-                # Cambia el color actual de la caja de input
-                colorInput = color_active if active else color_inactive
+                    passive = False
+                # Cambia el color actual del borde de inputBox
+                colorInput = colorActive if passive else colorPassive
+                # if(passive == True):
+                #     txt_surface = font2.render(inputStr, True, colorInput)
+                #     screen.blit(txt_surface, (inputBox.x+7, inputBox.y+10))
+                #     pygame.draw.rect(screen, colorInput, inputBox, 3, 5)
 
                 if btnOtroEjer.collidepoint(event.pos):
-                    shuffleNotes()
+                    pass
         if event.type == pygame.KEYDOWN:
 
             # Check for backspace
@@ -139,10 +131,10 @@ while run:
                 soundList_copy[11].play()
 
     #funcionalidad input box
-    txt_surface = font2.render(inputStr, True, colorInput)
-    screen.blit(txt_surface, (inputBox.x+7, inputBox.y+10))
-    pygame.draw.rect(screen, colorInput, inputBox, 3, 5)
+    if(passive == True):
+        txt_surface = font2.render(inputStr, True, colorInput)
+        screen.blit(txt_surface, (inputBox.x+7, inputBox.y+10))
+        pygame.draw.rect(screen, colorInput, inputBox, 3, 5)
 
     pygame.display.flip()
-    timer.tick(fps)
 pygame.quit()
