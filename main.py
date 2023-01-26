@@ -38,7 +38,7 @@ soundList_copy = soundList.copy()
 screen.fill(mostaza)
 pygame.draw.rect(screen, darkBlue, [30, 35, anchoContainer, altoContainer], 0, 10)
 #teclas blancas
-for i in range(7):
+for i in range(8):
     pygame.draw.rect(screen, amarillo, [i*86 + 60, 140, 72, 72], 0, 3)
 #primeras 2 teclas negras
 for i in range(2):
@@ -58,13 +58,11 @@ passive = False
 
 # texto
 font1 = pygame.font.SysFont(None, 90)
-font2 = pygame.font.SysFont(None, 35)
-whiteKeys = font1.render('z   x   c   v   b   n   m', True, 'black')
+font2 = pygame.font.SysFont(None, 32)
+whiteKeys = font1.render('z   x   c   v   b   n   m   ,', True, 'black')
 screen.blit(whiteKeys, (75, 145))
 blackKeys = font1.render('s   d        g   h   j', True, 'black')
 screen.blit(blackKeys, (125, 60))
-currentScale = font2.render('Jonico', True, 'black')
-screen.blit(currentScale, (585, 308))
 comprobar = font2.render('comprobar', True, 'black')
 screen.blit(comprobar, (598, 357))
 otroEj = font2.render('Otro ejercicio', True, 'black')
@@ -80,35 +78,36 @@ def pickScale():
     locrio = 'zsdvghj'
     pentMin = 'zdvbj'
     scales = [['Lidio', lidio], ['Jónico', jonico], ['Mixolidio', mixolidio], ['Dórico', dorico], 
-    ['Eólico', eolico], ['Frigio', frigio], ['Locrio', locrio], ['Pentatónica menor', pentMin]]
+    ['Eólico', eolico], ['Frigio', frigio], ['Locrio', locrio], ['Pent. menor', pentMin]]
     randScales = random.choice(scales)
     return randScales
-pickScale()
+currentScale = pickScale()
 
 while run:
     timer.tick(fps)
-    # -----------------?????------------------
-    # text_surface = font2.render(inputStr, True, 'black')
-    # screen.blit(text_surface, (inputBox.x+8, inputBox.y+13))
-    # inputBox.width = max(300, text_surface.get_width()+10)
-    # ------------------?????--------------------
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-                if inputBox.collidepoint(event.pos):
-                    # cambia el estado de passive
-                    passive = not passive
+            if inputBox.collidepoint(event.pos):
+                # cambia el estado de passive
+                passive = not passive
+            else:
+                passive = False
+            colorInput = colorActive if passive else colorPassive
+            if btnComprobar.collidepoint(event.pos):
+                if inputStr == currentScale[1]:
+                    print("correcto")
                 else:
-                    passive = False
-                colorInput = colorActive if passive else colorPassive
-                if btnOtroEjer.collidepoint(event.pos):
-                    pickScale()
-                    inputStr=''
+                    print("incorrecto")
+            if btnOtroEjer.collidepoint(event.pos):
+                pygame.draw.rect(screen, mostaza, [575, 305, 180, 30], 0, 7)
+                currentScale = pickScale()
+                inputStr=''
         if event.type == pygame.KEYDOWN:
             if passive == True:
-                # if event.key == pygame.K_RETURN:
-                #     pass
+                if event.key == pygame.K_RETURN:
+                    pass
                 if event.key == pygame.K_BACKSPACE:
                     inputStr = inputStr[:-1]
                 else:
@@ -137,11 +136,12 @@ while run:
                 soundList_copy[10].play()
             if event.key == pygame.K_m:
                 soundList_copy[11].play()
-
+    
+    lblCurrent = font2.render(str(currentScale[0]), True, 'black')
+    screen.blit(lblCurrent, (585, 308))
     pygame.draw.rect(screen, colorInput, inputBox, 3, 5)
-    text_surface = font2.render(inputStr, True, 'black')
-    screen.blit(text_surface, (inputBox.x+8, inputBox.y+13))
-    inputBox.width = max(300, text_surface.get_width()+10)
-
+    lblInput = font2.render(inputStr, True, 'black')
+    screen.blit(lblInput, (inputBox.x+8, inputBox.y+13))
+    inputBox.width = max(300, lblInput.get_width()+10)
     pygame.display.flip()
 pygame.quit()
