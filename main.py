@@ -17,6 +17,8 @@ gold = (212, 175, 55)
 screen = pygame.display.set_mode([ANCHO, ALTO])
 run = True
 
+soundWin = pygame.mixer.Sound('sounds\win.wav')
+soundLoss = pygame.mixer.Sound('sounds\loss.wav')
 soundDo1 = pygame.mixer.Sound('sounds\do1Note.wav')
 soundDi = pygame.mixer.Sound('sounds\diNote.wav')
 soundRe = pygame.mixer.Sound('sounds\\reNote.wav')
@@ -101,8 +103,10 @@ while run:
             if btnComprobar.collidepoint(event.pos):
                 if inputStr == currentScale[1]:
                     print("correcto")
+                    soundLoss.play()
                 else:
                     print("incorrecto")
+                    soundWin.play()
             if btnOtroEjer.collidepoint(event.pos):
                 pygame.draw.rect(screen, mostaza, [575, 305, 180, 30], 0, 7)
                 currentScale = pickScale()
