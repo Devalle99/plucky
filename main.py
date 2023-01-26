@@ -70,13 +70,28 @@ screen.blit(comprobar, (598, 357))
 otroEj = font2.render('Otro ejercicio', True, 'black')
 screen.blit(otroEj, (58, 323))
 
+def pickScale():
+    lidio = 'zxcgbnm'
+    jonico = 'zxcvbnm,'
+    mixolidio = 'zxcvbnj'
+    dorico = 'zxdvbnj,'
+    eolico = 'zxdvbhj'
+    frigio = 'zsdvbhj'
+    locrio = 'zsdvghj'
+    pentMin = 'zdvbj'
+    scales = [['Lidio', lidio], ['Jónico', jonico], ['Mixolidio', mixolidio], ['Dórico', dorico], 
+    ['Eólico', eolico], ['Frigio', frigio], ['Locrio', locrio], ['Pentatónica menor', pentMin]]
+    randScales = random.choice(scales)
+    return randScales
+pickScale()
+
 while run:
     timer.tick(fps)
-    # -----------------------------------
+    # -----------------?????------------------
     # text_surface = font2.render(inputStr, True, 'black')
     # screen.blit(text_surface, (inputBox.x+8, inputBox.y+13))
     # inputBox.width = max(300, text_surface.get_width()+10)
-    # --------------------------------------
+    # ------------------?????--------------------
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
@@ -87,13 +102,9 @@ while run:
                 else:
                     passive = False
                 colorInput = colorActive if passive else colorPassive
-                # if(passive == True):
-                #     txt_surface = font2.render(inputStr, True, colorInput)
-                #     screen.blit(txt_surface, (inputBox.x+7, inputBox.y+10))
-                #     pygame.draw.rect(screen, colorInput, inputBox, 3, 5)
-
                 if btnOtroEjer.collidepoint(event.pos):
-                    pass
+                    pickScale()
+                    inputStr=''
         if event.type == pygame.KEYDOWN:
             if passive == True:
                 # if event.key == pygame.K_RETURN:
