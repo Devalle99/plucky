@@ -16,7 +16,7 @@ amarillo = (223,170,36)
 gold = (212, 175, 55)
 screen = pygame.display.set_mode([ANCHO, ALTO])
 run = True
-userText = ''
+inputStr = ''
 
 soundDo1 = pygame.mixer.Sound('sounds\do1Note.wav')
 soundDi = pygame.mixer.Sound('sounds\diNote.wav')
@@ -55,7 +55,6 @@ colorPassive = mostaza
 colorActive = 'black'
 colorInput = colorPassive
 passive = False
-inputStr = ''
 
 # texto
 font1 = pygame.font.SysFont(None, 90)
@@ -74,9 +73,9 @@ screen.blit(otroEj, (58, 323))
 while run:
     timer.tick(fps)
     # -----------------------------------
-    text_surface = font2.render(userText, True, ('black'))
-    screen.blit(text_surface, (inputBox.x+8, inputBox.y+13))
-    inputBox.width = max(300, text_surface.get_width())
+    # text_surface = font2.render(inputStr, True, 'black')
+    # screen.blit(text_surface, (inputBox.x+8, inputBox.y+13))
+    # inputBox.width = max(300, text_surface.get_width()+10)
     # --------------------------------------
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -87,7 +86,6 @@ while run:
                     passive = not passive
                 else:
                     passive = False
-                # Cambia el color actual del borde de inputBox
                 colorInput = colorActive if passive else colorPassive
                 # if(passive == True):
                 #     txt_surface = font2.render(inputStr, True, colorInput)
@@ -97,14 +95,13 @@ while run:
                 if btnOtroEjer.collidepoint(event.pos):
                     pass
         if event.type == pygame.KEYDOWN:
-
-            # Check for backspace
-            if event.key == pygame.K_BACKSPACE: 
-                # get text input from 0 to -1 i.e. end.
-                userText = userText[:-1]  
-            else:
-                userText += event.unicode
-            
+            if passive == True:
+                # if event.key == pygame.K_RETURN:
+                #     pass
+                if event.key == pygame.K_BACKSPACE:
+                    inputStr = inputStr[:-1]
+                else:
+                    inputStr += event.unicode    
             if event.key == pygame.K_z:
                 soundList_copy[0].play()
             if event.key == pygame.K_s:
@@ -130,11 +127,10 @@ while run:
             if event.key == pygame.K_m:
                 soundList_copy[11].play()
 
-    #funcionalidad input box
-    if(passive == True):
-        txt_surface = font2.render(inputStr, True, colorInput)
-        screen.blit(txt_surface, (inputBox.x+7, inputBox.y+10))
-        pygame.draw.rect(screen, colorInput, inputBox, 3, 5)
+    pygame.draw.rect(screen, colorInput, inputBox, 3, 5)
+    text_surface = font2.render(inputStr, True, 'black')
+    screen.blit(text_surface, (inputBox.x+8, inputBox.y+13))
+    inputBox.width = max(300, text_surface.get_width()+10)
 
     pygame.display.flip()
 pygame.quit()
