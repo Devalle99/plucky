@@ -37,14 +37,14 @@ soundFi, soundSol, soundSi, soundLa, soundLi, soundTi, soundDo2]
 soundList_copy = soundList.copy()
 
 #colores para la caja de entrada de texto
-colorPassive = mostaza
+colorPassive = (250,200,110)
 colorActive = 'black'
 colorInput = colorPassive
 passive = False
 
 # texto
-font1 = pygame.font.SysFont(None, 90)
-font2 = pygame.font.SysFont(None, 32)
+font1 = pygame.font.Font('Roboto-Bold.ttf', 67)
+font2 = pygame.font.Font('Roboto-Bold.ttf', 25)
 inputStr = ''
 
 def pickScale():
@@ -82,13 +82,13 @@ while run:
     lblCurrentScale = pygame.draw.rect(screen, darkBlue, [570, 300, 190, 40], 5, 7)
 
     whiteKeys = font1.render('z   x   c   v   b   n   m   ,', True, 'black')
-    screen.blit(whiteKeys, (75, 145))
+    screen.blit(whiteKeys, (75, 135))
     blackKeys = font1.render('s   d        g   h   j', True, 'black')
-    screen.blit(blackKeys, (125, 60))
-    comprobar = font2.render('comprobar', True, 'black')
-    screen.blit(comprobar, (598, 357))
+    screen.blit(blackKeys, (125, 50))
+    comprobar = font2.render('Comprobar', True, 'black')
+    screen.blit(comprobar, (598, 354))
     otroEj = font2.render('Otro ejercicio', True, 'black')
-    screen.blit(otroEj, (58, 323))
+    screen.blit(otroEj, (63, 320))
     #-------------------------------------------------------------------------
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -147,7 +147,7 @@ while run:
                 soundList_copy[12].play()
     
     lblCurrent = font2.render(str(currentScale[0]), True, 'black')
-    screen.blit(lblCurrent, (585, 308))
+    screen.blit(lblCurrent, (585, 304))
     pygame.draw.rect(screen, colorInput, inputBox, 3, 5)
     lblInput = font2.render(inputStr, True, 'black')
     screen.blit(lblInput, (inputBox.x+8, inputBox.y+13))
