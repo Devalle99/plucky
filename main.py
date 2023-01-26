@@ -16,7 +16,6 @@ amarillo = (223,170,36)
 gold = (212, 175, 55)
 screen = pygame.display.set_mode([ANCHO, ALTO])
 run = True
-inputStr = ''
 
 soundDo1 = pygame.mixer.Sound('sounds\do1Note.wav')
 soundDi = pygame.mixer.Sound('sounds\diNote.wav')
@@ -30,26 +29,11 @@ soundSi = pygame.mixer.Sound('sounds\siNote.wav')
 soundLa = pygame.mixer.Sound('sounds\laNote.wav')
 soundLi = pygame.mixer.Sound('sounds\liNote.wav')
 soundTi = pygame.mixer.Sound('sounds\\tiNote.wav')
+soundDo2 = pygame.mixer.Sound('sounds\do2Note.wav')
 soundList = [soundDo1, soundDi, soundRe, soundRi, soundMi, soundFa,
-soundFi, soundSol, soundSi, soundLa, soundLi, soundTi]
+soundFi, soundSol, soundSi, soundLa, soundLi, soundTi, soundDo2]
 soundList_copy = soundList.copy()
 
-#----------------------------graficos fijos-----------------------
-screen.fill(mostaza)
-pygame.draw.rect(screen, darkBlue, [30, 35, anchoContainer, altoContainer], 0, 10)
-#teclas blancas
-for i in range(8):
-    pygame.draw.rect(screen, amarillo, [i*86 + 60, 140, 72, 72], 0, 3)
-#primeras 2 teclas negras
-for i in range(2):
-    pygame.draw.rect(screen, amarillo, [i*86 + 110, 55, 72, 72], 0, 3)
-#ultimas 3 teclas negras
-for i in range(3):
-    pygame.draw.rect(screen, amarillo, [i*86 + 365, 55, 72, 72], 0, 3)
-inputBox = pygame.draw.rect(screen, (255,255,180), [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
-btnOtroEjer = pygame.draw.rect(screen, darkBlue, [50, 315, 180, 43], 5, 7)
-btnComprobar = pygame.draw.rect(screen, darkBlue, [570, 350, 190, 40], 5, 7)
-lblCurrentScale = pygame.draw.rect(screen, darkBlue, [570, 300, 190, 40], 5, 7)
 #colores para la caja de entrada de texto
 colorPassive = mostaza
 colorActive = 'black'
@@ -59,24 +43,17 @@ passive = False
 # texto
 font1 = pygame.font.SysFont(None, 90)
 font2 = pygame.font.SysFont(None, 32)
-whiteKeys = font1.render('z   x   c   v   b   n   m   ,', True, 'black')
-screen.blit(whiteKeys, (75, 145))
-blackKeys = font1.render('s   d        g   h   j', True, 'black')
-screen.blit(blackKeys, (125, 60))
-comprobar = font2.render('comprobar', True, 'black')
-screen.blit(comprobar, (598, 357))
-otroEj = font2.render('Otro ejercicio', True, 'black')
-screen.blit(otroEj, (58, 323))
+inputStr = ''
 
 def pickScale():
-    lidio = 'zxcgbnm'
+    lidio = 'zxcgbnm,'
     jonico = 'zxcvbnm,'
-    mixolidio = 'zxcvbnj'
+    mixolidio = 'zxcvbnj,'
     dorico = 'zxdvbnj,'
-    eolico = 'zxdvbhj'
-    frigio = 'zsdvbhj'
-    locrio = 'zsdvghj'
-    pentMin = 'zdvbj'
+    eolico = 'zxdvbhj,'
+    frigio = 'zsdvbhj,'
+    locrio = 'zsdvghj,'
+    pentMin = 'zdvbj,'
     scales = [['Lidio', lidio], ['Jónico', jonico], ['Mixolidio', mixolidio], ['Dórico', dorico], 
     ['Eólico', eolico], ['Frigio', frigio], ['Locrio', locrio], ['Pent. menor', pentMin]]
     randScales = random.choice(scales)
@@ -84,7 +61,33 @@ def pickScale():
 currentScale = pickScale()
 
 while run:
+    screen.fill(mostaza)
     timer.tick(fps)
+    #----------------------------graficos fijos-----------------------
+    pygame.draw.rect(screen, darkBlue, [30, 35, anchoContainer, altoContainer], 0, 10)
+    #teclas blancas
+    for i in range(8):
+        pygame.draw.rect(screen, amarillo, [i*86 + 60, 140, 72, 72], 0, 3)
+    #primeras 2 teclas negras
+    for i in range(2):
+        pygame.draw.rect(screen, amarillo, [i*86 + 110, 55, 72, 72], 0, 3)
+    #ultimas 3 teclas negras
+    for i in range(3):
+        pygame.draw.rect(screen, amarillo, [i*86 + 365, 55, 72, 72], 0, 3)
+    inputBox = pygame.draw.rect(screen, (255,255,180), [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
+    btnOtroEjer = pygame.draw.rect(screen, darkBlue, [50, 315, 180, 43], 5, 7)
+    btnComprobar = pygame.draw.rect(screen, darkBlue, [570, 350, 190, 40], 5, 7)
+    lblCurrentScale = pygame.draw.rect(screen, darkBlue, [570, 300, 190, 40], 5, 7)
+
+    whiteKeys = font1.render('z   x   c   v   b   n   m   ,', True, 'black')
+    screen.blit(whiteKeys, (75, 145))
+    blackKeys = font1.render('s   d        g   h   j', True, 'black')
+    screen.blit(blackKeys, (125, 60))
+    comprobar = font2.render('comprobar', True, 'black')
+    screen.blit(comprobar, (598, 357))
+    otroEj = font2.render('Otro ejercicio', True, 'black')
+    screen.blit(otroEj, (58, 323))
+    #-------------------------------------------------------------------------
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
@@ -136,6 +139,8 @@ while run:
                 soundList_copy[10].play()
             if event.key == pygame.K_m:
                 soundList_copy[11].play()
+            if event.key == pygame.K_COMMA:
+                soundList_copy[12].play()
     
     lblCurrent = font2.render(str(currentScale[0]), True, 'black')
     screen.blit(lblCurrent, (585, 308))
