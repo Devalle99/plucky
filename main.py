@@ -103,10 +103,10 @@ while run:
             if btnComprobar.collidepoint(event.pos):
                 if inputStr == currentScale[1]:
                     print("correcto")
-                    soundLoss.play()
+                    soundWin.play()
                 else:
                     print("incorrecto")
-                    soundWin.play()
+                    soundLoss.play()
             if btnOtroEjer.collidepoint(event.pos):
                 pygame.draw.rect(screen, mostaza, [575, 305, 180, 30], 0, 7)
                 currentScale = pickScale()
