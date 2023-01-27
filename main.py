@@ -8,9 +8,9 @@ ANCHO = 800
 ALTO = 410
 anchoContainer = 740
 altoContainer = 250
-fps = 60
+fps = 30
 timer = pygame.time.Clock()
-darkBlue = (64*0.5,130*0.5,159*0.5)
+darkBlue = (64*0.4,130*0.5,159*0.5)
 mostaza = (213,128,41)
 amarillo = (223,170,36)
 gold = (212, 175, 55)
@@ -43,7 +43,7 @@ colorInput = colorPassive
 passive = False
 
 # texto
-font1 = pygame.font.Font('Roboto-Bold.ttf', 67)
+font1 = pygame.font.Font('Roboto-Bold.ttf', 60)
 font2 = pygame.font.Font('Roboto-Bold.ttf', 25)
 inputStr = ''
 
@@ -61,30 +61,53 @@ def pickScale():
     randScales = random.choice(scales)
     return randScales
 currentScale = pickScale()
-
+altoTeclas = 95
 while run:
     screen.fill(mostaza)
-    timer.tick(fps)
     #----------------------------graficos fijos-----------------------
     pygame.draw.rect(screen, darkBlue, [30, 35, anchoContainer, altoContainer], 0, 10)
     #teclas blancas
     for i in range(8):
-        pygame.draw.rect(screen, amarillo, [i*86 + 60, 140, 72, 72], 0, 3)
+        pygame.draw.rect(screen, 'white', [i*86 + 60, 165, 72, altoTeclas], 0, 3)
     #primeras 2 teclas negras
     for i in range(2):
-        pygame.draw.rect(screen, amarillo, [i*86 + 110, 55, 72, 72], 0, 3)
+        pygame.draw.rect(screen, 'black', [i*86 + 110, 55, 72, altoTeclas], 0, 3)
+        # pygame.draw.rect(screen, amarillo, [i*86 + 110, 55, 72, 72], 0, 3)
     #ultimas 3 teclas negras
     for i in range(3):
-        pygame.draw.rect(screen, amarillo, [i*86 + 365, 55, 72, 72], 0, 3)
+        pygame.draw.rect(screen, 'black', [i*86 + 365, 55, 72, altoTeclas], 0, 3)
     inputBox = pygame.draw.rect(screen, (255,255,180), [(ANCHO//2) - 150, 315, 300, 50], 0, 5)
     btnOtroEjer = pygame.draw.rect(screen, darkBlue, [50, 315, 180, 43], 5, 7)
     btnComprobar = pygame.draw.rect(screen, darkBlue, [570, 350, 190, 40], 5, 7)
     lblCurrentScale = pygame.draw.rect(screen, darkBlue, [570, 300, 190, 40], 5, 7)
 
-    whiteKeys = font1.render('z   x   c   v   b   n   m   ,', True, 'black')
-    screen.blit(whiteKeys, (75, 135))
-    blackKeys = font1.render('s   d        g   h   j', True, 'black')
-    screen.blit(blackKeys, (125, 50))
+    whiteKeys = font1.render('Z', True, 'black')
+    screen.blit(whiteKeys, (77, 178))
+    whiteKeys = font1.render('X', True, 'black')
+    screen.blit(whiteKeys, (162, 178))
+    whiteKeys = font1.render('C', True, 'black')
+    screen.blit(whiteKeys, (247, 178))
+    whiteKeys = font1.render('V', True, 'black')
+    screen.blit(whiteKeys, (333, 178))
+    whiteKeys = font1.render('B', True, 'black')
+    screen.blit(whiteKeys, (420, 178))
+    whiteKeys = font1.render('N', True, 'black')
+    screen.blit(whiteKeys, (504, 178))
+    whiteKeys = font1.render('M', True, 'black')
+    screen.blit(whiteKeys, (585, 178))
+    whiteKeys = font1.render(',', True, 'black')
+    screen.blit(whiteKeys, (690, 170))
+    
+    blackKeys = font1.render('S', True, 'white')
+    screen.blit(blackKeys, (127, 68))
+    blackKeys = font1.render('D', True, 'white')
+    screen.blit(blackKeys, (213, 68))
+    blackKeys = font1.render('G', True, 'white')
+    screen.blit(blackKeys, (380, 68))
+    blackKeys = font1.render('H', True, 'white')
+    screen.blit(blackKeys, (466, 68))
+    blackKeys = font1.render('J', True, 'white')
+    screen.blit(blackKeys, (555, 68))
     comprobar = font2.render('Comprobar', True, 'black')
     screen.blit(comprobar, (598, 354))
     otroEj = font2.render('Otro ejercicio', True, 'black')
@@ -102,10 +125,12 @@ while run:
             colorInput = colorActive if passive else colorPassive
             if btnComprobar.collidepoint(event.pos):
                 if inputStr == currentScale[1]:
-                    print("correcto")
-                    soundWin.play()
+                    # lblCorrecto = font2.render('Correcto', True, 'green')
+                    # screen.blit(lblCorrecto, (335, 323))
+                    soundWin.play()        
                 else:
-                    print("incorrecto")
+                    # lblIncorrecto = font2.render('Incorrecto', True, 'red')
+                    # screen.blit(lblIncorrecto, (335, 323))
                     soundLoss.play()
             if btnOtroEjer.collidepoint(event.pos):
                 pygame.draw.rect(screen, mostaza, [575, 305, 180, 30], 0, 7)
@@ -152,5 +177,6 @@ while run:
     lblInput = font2.render(inputStr, True, 'black')
     screen.blit(lblInput, (inputBox.x+8, inputBox.y+13))
     inputBox.width = max(300, lblInput.get_width()+10)
+    timer.tick(fps)
     pygame.display.flip()
 pygame.quit()
