@@ -1,9 +1,8 @@
 import random
 import pygame
-from pygame import mixer
 pygame.init()
 pygame.mixer.init()
-#TODO: importar modulos individuales en vez de librerias completas
+pygame.display.set_caption('Plucky')
 ANCHO = 800
 ALTO = 420
 anchoContainer = 740
@@ -41,7 +40,6 @@ colorActive = 'black'
 colorInput = colorPassive
 passive = False
 
-# texto
 font1 = pygame.font.Font('Roboto-Bold.ttf', 60)
 font2 = pygame.font.Font('Roboto-Bold.ttf', 25)
 font3 = pygame.font.Font('Roboto-Bold.ttf', 22)
@@ -182,7 +180,10 @@ while run:
                     soundLoss.play()
             if btnSiguiente.collidepoint(event.pos):
                 strCorrecto = ''
+                temp = currentScale
                 currentScale = pickScale()
+                while currentScale == temp:
+                    currentScale = pickScale()
                 inputStr=''
         if event.type == pygame.KEYDOWN:
             if passive == True:
