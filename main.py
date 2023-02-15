@@ -57,13 +57,14 @@ def pickScale():
     pentMin = 'zdvbj,'
     pentMaj = 'zxcbn,'
     melMin = 'zxdvbnm,'
-    blues = 'zxdvgbj,'
+    blues = 'zdvgbj,'
     armMin = 'zxdvbhm,'
     lidFlat7 = 'zxcgbnj,'
     mixoFlat13 = 'zxcvbhj,'
-    scales = [['Lidio', lidio], ['Jónico', jonico], ['Mixolidio', mixolidio], ['Dórico', dorico], 
-    ['Eólico', eolico], ['Frigio', frigio], ['Locrio', locrio], ['Pent. menor', pentMin], 
-    ['Pent. mayor', pentMaj], ['Melodica men.', melMin], ['Blues', blues], ['Armónica men.', armMin],
+    scales = [['Lidio', lidio], ['Jónico', jonico], ['Mixolidio', mixolidio],
+    ['Dórico', dorico], ['Eólico', eolico], ['Frigio', frigio], ['Locrio', locrio],
+    ['Pent. menor', pentMin], ['Pent. mayor', pentMaj], ['Melodica men.', melMin],
+    ['Blues', blues], ['Armónica men.', armMin],
     ['Lidio b7', lidFlat7], ['Mixo. b13', mixoFlat13]]
     randScales = random.choice(scales)
     return randScales
